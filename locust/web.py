@@ -3,7 +3,7 @@
 import csv
 import json
 import logging
-import os.path
+import os
 from collections import defaultdict
 from itertools import chain
 from time import time
@@ -15,7 +15,7 @@ from gevent import pywsgi
 from locust import __version__ as version
 from six.moves import StringIO, xrange
 
-from . import runners
+from . import monitoring, runners
 from .runners import MasterLocustRunner
 from .stats import distribution_csv, median_from_dict, requests_csv, sort_stats
 from .util.cache import memoize
@@ -27,6 +27,10 @@ DEFAULT_CACHE_TIME = 2.0
 app = Flask(__name__)
 app.debug = True
 app.root_path = os.path.dirname(os.path.abspath(__file__))
+
+monitoring_enabled = os.getenv('LOCUST_MONITORING_ENABLED')
+if monitoring_enabled:
+    monitor = monitoring.LocustMonitor()
 
 
 @app.route('/')
@@ -130,6 +134,13 @@ def request_stats():
     
     report["state"] = runners.locust_runner.state
     report["user_count"] = runners.locust_runner.user_count
+
+    if monitoring_enabled:
+        # TODO: Maybe make the stats to post configurable from the UI
+        target_host = monitor.plaintext_url(runners.locust_runner.host)
+        current_time = time()
+        rps_stat = f"{target_host}.locust.rps {report['total_rps']} {current_time}"
+        monitor.send_result(rps_stat)
 
     return jsonify(report)
 
