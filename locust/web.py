@@ -142,6 +142,8 @@ def request_stats():
         host_ns = monitor.plaintext_url(target_host)
         current_time = time()
         rps = f"{host_ns}.locust.rps {report['total_rps']} {current_time}"
+        logging.error('RPS string is')
+        logging.error(rps)
         monitor.send_result(rps)
 
     return jsonify(report)
