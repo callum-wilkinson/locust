@@ -141,7 +141,7 @@ def request_stats():
         # TODO: Maybe make the stats to post configurable from the UI
         host_ns = monitor.plaintext_url(target_host)
         current_time = time()
-        rps = f"{host_ns}.locust.rps {report['total_rps']} {current_time}"
+        rps = f"{host_ns}.locust.rps {report['total_rps']} {current_time}\n"
         logging.error('RPS string is')
         logging.error(rps)
         monitor.send_result(rps)
