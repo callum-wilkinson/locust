@@ -18,8 +18,7 @@ class LocustMonitor:
 
     def send_result(self, result: str) -> None:
         """ Encode and send the result. """
-        plaintext = self.plaintext_namespacing(result)
-        encoded = plaintext.encode('utf-8')
+        encoded = result.encode('utf-8')
         self.sock.send(encoded)
 
     def exit_handler(self) -> None:
