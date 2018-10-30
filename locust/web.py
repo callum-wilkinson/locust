@@ -139,8 +139,8 @@ def request_stats():
         # TODO: Maybe make the stats to post configurable from the UI
         target_host = monitor.plaintext_url(runners.locust_runner.host)
         current_time = time()
-        rps_stat = f"{target_host}.locust.rps {report['total_rps']} {current_time}"
-        monitor.send_result(rps_stat)
+        rps = f"{target_host}.locust.rps {report['total_rps']} {current_time}"
+        monitor.send_result(rps)
 
     return jsonify(report)
 
