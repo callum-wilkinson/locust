@@ -135,11 +135,14 @@ def request_stats():
     report["state"] = runners.locust_runner.state
     report["user_count"] = runners.locust_runner.user_count
 
-    if monitoring_enabled:
+    target_host = runners.locust_runner.host
+    logging.error(f'{target_host}')
+
+    if monitoring_enabled and target_host:
         # TODO: Maybe make the stats to post configurable from the UI
-        target_host = monitor.plaintext_url(runners.locust_runner.host)
+        host_ns = monitor.plaintext_url(runners.locust_runner.host)
         current_time = time()
-        rps = f"{target_host}.locust.rps {report['total_rps']} {current_time}"
+        rps = f"{host_ns}.locust.rps {report['total_rps']} {current_time}"
         monitor.send_result(rps)
 
     return jsonify(report)
