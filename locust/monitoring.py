@@ -1,5 +1,4 @@
 import atexit
-import logging
 import os
 import re
 import socket
@@ -19,11 +18,7 @@ class LocustMonitor:
 
     def send_result(self, result: str) -> None:
         """ Encode and send the result. """
-        logging.error('RESULT IS')
-        logging.error(result)
         encoded = result.encode('utf-8')
-        logging.error('ENCODED IS')
-        logging.error(encoded)
         self.sock.send(encoded)
 
     def exit_handler(self) -> None:
