@@ -135,7 +135,8 @@ def request_stats():
     report["state"] = runners.locust_runner.state
     report["user_count"] = runners.locust_runner.user_count
 
-    target_host = runners.locust_runner.host or runners.locust_runner.locust_classes[0].host
+    target_host = _get_host()
+    logging.error(f'{target_host}')
 
     if monitoring_enabled and target_host:
         # TODO: Maybe make the stats to post configurable from the UI
@@ -176,6 +177,17 @@ def exceptions_csv():
     response.headers["Content-disposition"] = disposition
     return response
 
+
 def start(locust, options):
     pywsgi.WSGIServer((options.web_host, options.port),
                       app, log=None).serve_forever()
+
+
+def _get_host():
+    if runners.locust_runner.host:
+        host = runners.locust_runner.host
+    elif len(runners.locust_runner.locust_classes) > 0:
+        host = runners.locust_runner.locust_classes[0].host
+    else:
+        host = None
+    return host
