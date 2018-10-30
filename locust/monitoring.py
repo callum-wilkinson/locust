@@ -48,6 +48,6 @@ class LocustMonitor:
                     )
                 )
                 break
-            except ConnectionRefusedError:
+            except ConnectionError:  # Base class of many ConnectionErrors
                 sleep(i*i)  # Exponential Backoff For Attempting to Connect
                 continue
