@@ -34,7 +34,8 @@ class LocustMonitor:
         return collapsed
 
     def plaintext_url(self, namespace:str) -> str:
-        finished = re.sub('[/]', '', self.plaintext_namespacing(namespace))
+        plain = self.plaintext_namespacing(namespace)
+        finished = re.sub('[/]', '', plain)
         return finished
 
     def _connect_socket(self):
