@@ -136,7 +136,8 @@ def request_stats():
     report["user_count"] = runners.locust_runner.user_count
 
     target_host = _get_host()
-    logging.error(f'{target_host}')
+    logging.error('The target host is:')
+    logging.error(target_host)
 
     if monitoring_enabled and target_host:
         # TODO: Maybe make the stats to post configurable from the UI
