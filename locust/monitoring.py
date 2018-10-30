@@ -1,5 +1,4 @@
 import atexit
-import logging
 import os
 import re
 import socket
@@ -31,18 +30,12 @@ class LocustMonitor:
     @staticmethod
     def plaintext_namespacing(namespace: str) -> str:
         """ Change namespacing to work with the plaintext protocol. """
-        logging.error('The namespace is:')
-        logging.error(namespace)
         collapsed = re.sub('[.: \]\[]', '', namespace)  # pylint: disable=W1401
         return collapsed
 
     def plaintext_url(self, namespace:str) -> str:
         plain = self.plaintext_namespacing(namespace)
-        logging.error('The plain is:')
-        logging.error(plain)
         finished = re.sub('[/]', '', plain)
-        logging.error('The finished is:')
-        logging.error(finished)
         return finished
 
     def _connect_socket(self):
